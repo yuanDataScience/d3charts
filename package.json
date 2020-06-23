@@ -1,0 +1,36 @@
+{
+    "name": "d3chart",
+    "version": "1.0.0",
+    "description": "js library for reuseable d3 charts",
+    "main": "index.js",
+    "scripts": {
+        "dev": "webpack --mode development",
+        "build": "webpack --mode production",
+        "start": "webpack-dev-server --mode development --open",
+        "complie:sass": "node-sass src/sass/main.scss dist/css/target.css -w"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yuanDataScience/d3charts.git"
+    },
+    "author": "Yuan Huang",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/yuanDataScience/d3charts/issues"
+    },
+    "homepage": "https://github.com/yuanDataScience/d3charts#readme",
+    "devDependencies": {
+        "html-webpack-plugin": "^4.3.0",
+        "node-sass": "^4.14.1",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "crossfilter2": "^1.5.2",
+        "d3": "^5.16.0",
+        "d3-tip": "^0.9.1",
+        "simple-datatables": "^2.1.13"
+    }
+}
