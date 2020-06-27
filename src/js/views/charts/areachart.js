@@ -17,7 +17,7 @@ export const areaChart = () => {
 
     function chart(selection) {
         selection.each(function(data) {
-
+            //console.log("key test", xValue(data[0]));
             data = data.map(d => {
                 return [xValue(d), y0Value(d), y1Value(d)];
             });
@@ -45,9 +45,6 @@ export const areaChart = () => {
                 //.domain(d3.extent([].concat(data.map(d => d[1]), data.map(d => d[2]))));
                 .domain(d3.extent([].concat(data.map(d => d[2]), data.map(d => d[1]))));
 
-
-            // yScale.rangeRound([innerHeight, 0])
-            //     .domain([0, d3.max(data, d => d[2])]);
 
             let area = d3.area()
                 .x(X)
@@ -79,7 +76,7 @@ export const areaChart = () => {
             xAxis.call(xAxisCall.scale(xScale));
             yAxis.call(yAxisCall.scale(yScale));
 
-            console.log("area chart data", data);
+            //console.log("area chart data", data);
 
             g.append("path")
                 .attr("fill", "steelblue")
@@ -159,6 +156,5 @@ export const areaChart = () => {
         y1Value = _;
         return chart;
     };
-
     return chart;
 }

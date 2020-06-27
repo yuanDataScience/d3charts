@@ -1,10 +1,12 @@
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import { barChart } from './charts/barchart';
-import { scatterPlot } from './charts/scatterplot'
-import { timeSeriesLineChart } from './charts/timeserieslinechart'
-import { areaChart } from './charts/areachart'
+import { scatterPlot } from './charts/scatterplot';
+import { timeSeriesLineChart } from './charts/timeserieslinechart';
+import { areaChart } from './charts/areachart';
+import { stackAreaChart } from './charts/stackareachart';
 export { barChart };
 export { scatterPlot };
 export { timeSeriesLineChart };
 export { areaChart };
+export { stackAreaChart };

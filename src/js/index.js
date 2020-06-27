@@ -32,7 +32,13 @@ let myAreachart2 = d3chart.areaChart()
     .height(500)
     .x(d => d.date)
     .y1(d => d['Firefox'])
-    .y0(d => d['Internet Explorer'])
+    .y0(d => d['Internet Explorer']);
+
+let myStackAreaChart = d3chart.stackAreaChart()
+    .width(1000)
+    .height(700)
+    .x('date')
+    .y(["Google Chrome", "Internet Explorer", "Firefox", "Safari"]);
 
 const parseDate = d3.timeParse("%Y %b %d");
 
@@ -103,6 +109,10 @@ async function plot() {
         d3.select("#areachart2")
             .datum(browser_data)
             .call(myAreachart2);
+
+        d3.select("#stackareachart")
+            .datum(browser_data)
+            .call(myStackAreaChart);
 
     } catch (e) {
         console.log(e)
