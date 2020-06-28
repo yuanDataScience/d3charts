@@ -1,27 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="css/d3charts.css"/><script src="https://gitcdn.xyz/repo/yuanDataScience/d3charts/master/dist/js/bundle.js"></script><script src="https://d3js.org/d3.v5.min.js"></script><title>D3 chart tester</title></head><body><h3>D3 chart testing !</h3><div id="demoTableSection"></div><div id="barchart"></div><div id="scatterplot"></div><div id="timeserieschart"></div><div id="areachart"></div><div id="areachart2"></div><div id="stackareachart"></div><div id="piechart"></div><div id="donutchart"></div><script>let myBarChart = d3chart.barChart()
+    .width(600)
+    .height(500)
+    .x(function(d) { return d.letter; })
+    .y(function(d) { return d.frequency; });
 
-<head>
-    <meta charset="UTF-8">
+let myScatterplot = d3chart.scatterPlot()
+    .width(600)
+    .height(500)
+    .x(d => d.letter)
+    .y(d => d.frequency);
 
-    <link rel="stylesheet" type="text/css" href="css/d3charts.css" />
 
-    <title>D3 chart tester</title>
+let formatDate = d3.timeParse("%Y");
+let myTimeSeriesChart = d3chart.timeSeriesLineChart()
+    .width(600)
+    .height(500)
+    .x(d => formatDate(d.year))
+    .y(d => +d.value);
 
-</head>
+let myAreaChart = d3chart.areaChart()
+    .width(1000)
+    .height(500)
+    .x('date')
+    .y1('close');
 
-<body>
-    <H3> D3 chart testing ! </H3>
-    <div id="demoTableSection"></div>
-    <div id="barchart"></div>
-    <div id="scatterplot"></div>
-    <div id="timeserieschart"></div>
-    <div id="areachart"></div>
-    <div id="areachart2"></div>
-    <div id="stackareachart"></div>
-    <div id="piechart"></div>
-    <div id="donutchart"></div>
+let myAreachart2 = d3chart.areaChart()
+    .width(3000)
+    .height(500)
+    .x('date')
+    .y1('Firefox')
+    .y0('Internet Explorer');
 
-<script src="js/bundle.js"></script></body>
+let myStackAreaChart = d3chart.stackAreaChart()
+    .width(1000)
+    .height(700)
+    .x('date')
+    .y(["Google Chrome", "Internet Explorer", "Firefox", "Safari"]);
 
-</html>
+let myPieChart = d3chart.pieChart()
+    .width(500)
+    .height(700)
+    .x('age')
+    .y(d => d.population);
+
+const parseDate = d3.timeParse("%Y %b %d");
+
+function percentage(d, i, columns) {
+
+    for (let i = 0, n = columns.length; i < n; ++i) {
+        d[columns[i]] = d[columns[i]].trim();
+    }
+    d.date = parseDate(d.date);
+    for (let i = 1, n = columns.length; i < n; ++i) {
+        d[columns[i]] = +d[columns[i]] / 100;
+    }
+
+    return d;
+}
+
+const area_date_parser = d3.timeParse("%d-%b-%y")
+
+function processTSV(d, i, columns) {
+    for (let i = 0, n = columns.length; i < n; ++i) {
+        d[columns[i]] = d[columns[i]].trim();
+    }
+    d.date = area_date_parser(d.date);
+
+    for (let i = 1, n = columns.length; i < n; ++i) {
+        d[columns[i]] = +d[columns[i]];
+    }
+
+    return d;
+}
+
+
+plot();
+
+
+async function plot() {
+    try {
+        let data = await d3.csv("../data/data.tsv", function(d) {
+            d.frequency = +d.frequency;
+            return d;
+        });
+
+        let timeSeriesData = await d3.json("../data/example.json");
+
+        let browser_data = await d3.tsv("../data/browser_usage.tsv", percentage);
+
+        let area_data = await d3.tsv("../data/area.tsv", processTSV);
+
+        let pie_data = await d3.csv("../data/pie.csv", d => { d.population = +d.population; return d; });
+
+
+        d3.select("#barchart")
+            .datum(data)
+            .call(myBarChart);
+
+        d3.select("#scatterplot")
+            .datum(data)
+            .call(myScatterplot);
+
+        d3.select("#timeserieschart")
+            .datum(timeSeriesData)
+            .call(myTimeSeriesChart);
+
+        d3.select("#areachart")
+            .datum(area_data)
+            .call(myAreaChart);
+
+        d3.select("#areachart2")
+            .datum(browser_data)
+            .call(myAreachart2);
+
+        d3.select("#stackareachart")
+            .datum(browser_data)
+            .call(myStackAreaChart);
+
+        d3.select("#piechart")
+            .datum(pie_data)
+            .call(myPieChart);
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}</script><script src="js/d3chart.js"></script></body></html>
