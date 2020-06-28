@@ -2,7 +2,7 @@
     "name": "d3chart",
     "version": "1.0.0",
     "description": "js library for reuseable d3 charts",
-    "main": "index.js",
+    "main": "d3chart.js",
     "scripts": {
         "dev": "webpack --mode development",
         "build": "webpack --mode production",

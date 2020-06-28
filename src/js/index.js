@@ -1,4 +1,4 @@
-import * as d3chart from './d3chart';
+import * as d3chart from './d3chart_old';
 import * as d3 from 'd3';
 
 let myBarChart = d3chart.barChart()
