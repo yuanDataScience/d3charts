@@ -24,21 +24,27 @@ let myTimeSeriesChart = d3chart.timeSeriesLineChart()
 let myAreaChart = d3chart.areaChart()
     .width(1000)
     .height(500)
-    .x(d => d.date)
-    .y1(d => d.close);
+    .x('date')
+    .y1('close');
 
 let myAreachart2 = d3chart.areaChart()
     .width(3000)
     .height(500)
-    .x(d => d.date)
-    .y1(d => d['Firefox'])
-    .y0(d => d['Internet Explorer']);
+    .x('date')
+    .y1('Firefox')
+    .y0('Internet Explorer');
 
 let myStackAreaChart = d3chart.stackAreaChart()
     .width(1000)
     .height(700)
     .x('date')
     .y(["Google Chrome", "Internet Explorer", "Firefox", "Safari"]);
+
+let myPieChart = d3chart.pieChart()
+    .width(500)
+    .height(700)
+    .x('age')
+    .y(d => d.population);
 
 const parseDate = d3.timeParse("%Y %b %d");
 
@@ -85,10 +91,10 @@ async function plot() {
 
         let browser_data = await d3.tsv("../data/browser_usage.tsv", percentage);
 
-        //console.log("browser data", browser_data);
-
         let area_data = await d3.tsv("../data/area.tsv", processTSV);
-        //console.log("area data", area_data);
+
+        let pie_data = await d3.csv("../data/pie.csv", d => { d.population = +d.population; return d; });
+
 
         d3.select("#barchart")
             .datum(data)
@@ -113,6 +119,10 @@ async function plot() {
         d3.select("#stackareachart")
             .datum(browser_data)
             .call(myStackAreaChart);
+
+        d3.select("#piechart")
+            .datum(pie_data)
+            .call(myPieChart);
 
     } catch (e) {
         console.log(e)

@@ -64,7 +64,7 @@ export const stackAreaChart = () => {
             //Scales
             color.domain(yValue);
             xScale.rangeRound([0, innerWidth])
-                .domain(d3.extent(data, d => d.date));
+                .domain(d3.extent(data, d => d[xValue]));
 
             const maxDateVal = d3.max(data, function(d) {
                 let vals = d3.keys(d).map(function(key) { return key !== xValue ? d[key] : 0 });
@@ -76,7 +76,7 @@ export const stackAreaChart = () => {
                 .domain([0, maxDateVal]);
 
             var area = d3.area()
-                .x(function(d) { return xScale(d.data.date); })
+                .x(function(d) { return xScale(d.data[xValue]); })
                 .y0(function(d) { return yScale(d[0]); })
                 .y1(function(d) { return yScale(d[1]); });
 
@@ -128,9 +128,32 @@ export const stackAreaChart = () => {
 
             browser.exit().remove();
 
+            const legend = g.append("g")
+                .attr("transform", "translate(" + (innerWidth + 10) +
+                    "," + 50 + ")");
 
-        })
+            yValue.forEach(function(d, i) {
+                let legendRow = legend.append("g")
+                    .attr("transform", "translate(0, " + (i * 20) + ")");
+
+                legendRow.append("rect")
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .attr("fill", color(d));
+
+                legendRow.append("text")
+                    .attr("x", 20)
+                    .attr("y", 10)
+                    .attr("text-anchor", "start")
+                    .style("text-transform", "capitalize")
+                    .text(d);
+
+
+            })
+        });
+
     }
+
 
     chart.margin = function(_) {
         if (!arguments.length) return margin;

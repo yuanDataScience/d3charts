@@ -11,15 +11,37 @@ export const areaChart = () => {
         xScale = d3.scaleTime(),
         yScale = d3.scaleLinear(),
 
-        xValue = function(d) { return d[0]; },
-        y1Value = function(d) { return d[1]; },
-        y0Value = function(d) { return 0; };
+        xValue = "",
+        y1Value = "",
+        y0Value = ""
+
+    // xValue = function(d) { return d[0]; },
+    // y1Value = function(d) { return d[1]; },
+    //y0Value = function(d) { return 0; };
 
     function chart(selection) {
         selection.each(function(data) {
             //console.log("key test", xValue(data[0]));
+            //console.log("data columns", data.columns);
+            const keys = data.columns;
+
+            if (xValue === "") {
+                xValue = keys[0];
+            }
+            if (y1Value === "") {
+                y1Value = keys[1];
+            }
+            if ((!keys.includes(xValue)) || (!keys.includes(y1Value)) || (y0Value != "" && !keys.includes(y0Value))) {
+                alert("x, y1 or y0 column names are not valid");
+                return;
+            }
             data = data.map(d => {
-                return [xValue(d), y0Value(d), y1Value(d)];
+                if (y0Value != "") {
+                    return [d[xValue], d[y0Value], d[y1Value]];
+                } else {
+                    return [d[xValue], 0, d[y1Value]];
+                }
+
             });
 
             // if svg already exists.
@@ -76,8 +98,6 @@ export const areaChart = () => {
             xAxis.call(xAxisCall.scale(xScale));
             yAxis.call(yAxisCall.scale(yScale));
 
-            //console.log("area chart data", data);
-
             g.append("path")
                 .attr("fill", "steelblue")
                 .attr("d", area(data));
@@ -104,7 +124,32 @@ export const areaChart = () => {
                 .attr("stroke-with", "3px")
                 .attr("d", line_2(data));
 
-        })
+            const legend = g.append("g")
+                .attr("transform", "translate(" + (innerWidth + 10) +
+                    "," + 50 + ")");
+
+            const legend_labels = y0Value === "" ? [y1Value] : [y0Value, y1Value];
+            const colors = y0Value === "" ? ["red"] : ["green", "red"];
+            legend_labels.forEach(function(d, i) {
+                let legendRow = legend.append("g")
+                    .attr("transform", "translate(0, " + (i * 20) + ")");
+
+                legendRow.append("rect")
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .attr("fill", colors[i]);
+
+                legendRow.append("text")
+                    .attr("x", 20)
+                    .attr("y", 10)
+                    .attr("text-anchor", "start")
+                    .style("text-transform", "capitalize")
+                    .text(legend_labels[i]);
+
+
+            })
+
+        });
     }
 
     // The x-accessor for the path generator; xScale ∘ xValue.
