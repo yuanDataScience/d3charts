@@ -4,9 +4,9 @@ import d3Tip from 'd3-tip';
 
 export const scatterPlot = () => {
 
-    var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+    var margin = { top: 30, right: 40, bottom: 100, left: 40 },
         width = 400,
-        height = 400,
+        height = 450,
         innerWidth = width - margin.left - margin.right,
         innerHeight = height - margin.top - margin.bottom,
         xValue = function(d) { return d[0]; },

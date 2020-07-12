@@ -3,9 +3,9 @@ import * as d3 from 'd3';
 
 export const areaChart = () => {
 
-    let margin = { left: 80, right: 100, top: 50, bottom: 100 },
-        height = 500,
-        width = 800,
+    let margin = { left: 40, right: 40, top: 30, bottom: 100 },
+        height = 450,
+        width = 400,
         innerHeight = height - margin.top - margin.bottom,
         innerWidth = width - margin.left - margin.right,
         xScale = d3.scaleTime(),

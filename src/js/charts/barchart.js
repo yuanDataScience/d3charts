@@ -4,9 +4,9 @@ import d3Tip from 'd3-tip';
 
 export const barChart = () => {
 
-    let margin = { top: 20, right: 20, bottom: 30, left: 40 },
+    let margin = { top: 30, right: 40, bottom: 100, left: 40 },
         width = 400,
-        height = 400,
+        height = 450,
         innerWidth = width - margin.left - margin.right,
         innerHeight = height - margin.top - margin.bottom,
         xValue = function(d) { return d[0]; },
@@ -27,8 +27,11 @@ export const barChart = () => {
             // Otherwise, create the skeletal chart.
             const svgEnter = svg.enter().append("svg");
             const gEnter = svgEnter.append("g");
+
+
             gEnter.append("g").attr("class", "x axis");
             gEnter.append("g").attr("class", "y axis");
+
 
             // Update the outer dimensions.
             svg.merge(svgEnter).attr("width", width)
@@ -37,7 +40,7 @@ export const barChart = () => {
             // Update the inner dimensions.
             const g = svg.merge(svgEnter).select("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+            console.log("g", g);
 
             xScale.rangeRound([0, innerWidth])
                 .domain(data.map(d => d[0]));

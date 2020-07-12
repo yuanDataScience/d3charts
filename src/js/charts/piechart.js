@@ -3,9 +3,9 @@ import * as d3 from 'd3';
 
 export const pieChart = () => {
 
-    let margin = { left: 80, right: 100, top: 50, bottom: 100 },
-        height = 500,
-        width = 800,
+    let margin = { left: 40, right: 40, top: 30, bottom: 100 },
+        height = 450,
+        width = 400,
         innerHeight = height - margin.top - margin.bottom,
         innerWidth = width - margin.left - margin.right,
         color = d3.scaleOrdinal(d3.schemeCategory10),
@@ -33,10 +33,10 @@ export const pieChart = () => {
 
             // Update the inner dimensions.
             const g = svg.merge(svgEnter).select("g")
-                .attr("transform", "translate(" + innerWidth / 4 + "," + innerHeight / 2 + ")");
+                .attr("transform", "translate(" + innerWidth / 2 + "," + innerHeight / 2 + ")");
 
             const arc = d3.arc()
-                .innerRadius(radius - 80)
+                .innerRadius(0)
                 .outerRadius(radius - 20);
 
             const pie = d3.pie()
@@ -59,7 +59,7 @@ export const pieChart = () => {
             arcs.exit().remove();
 
             const legend = g.append("g")
-                .attr("transform", "translate(" + (innerWidth / 4 + 20) +
+                .attr("transform", "translate(" + (innerWidth / 2 + 20) +
                     "," + (-innerHeight / 2 + 30) + ")");
 
             keys.forEach(function(d, i) {

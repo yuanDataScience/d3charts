@@ -7,7 +7,7 @@
         "dev": "webpack --mode development",
         "build": "webpack --mode production",
         "start": "webpack-dev-server --mode development --open",
-        "complie:sass": "node-sass src/sass/main.scss dist/css/target.css -w"
+        "compile:sass": "node-sass src/css/sass/main.scss dist/css/demo.css -w"
     },
     "repository": {
         "type": "git",
