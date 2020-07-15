@@ -4,10 +4,12 @@ import d3Tip from 'd3-tip';
 
 export const dragForceChart = () => {
 
-    let margin = { top: 30, right: 100, bottom: 100, left: 40 },
+    let margin = { top: 70, right: 100, bottom: 10, left:50 },
         width = 400,
         height = 450,
         colorScale = d3.scaleOrdinal(d3.schemeCategory10),
+
+        title="",
 
         node_property ="",
         link_property = "",
@@ -25,8 +27,7 @@ export const dragForceChart = () => {
             const innerWidth = width - margin.left - margin.right,
             innerHeight = height - margin.top - margin.bottom,
 
-            keys = node_group_name ===""?data[node_property].map(d => d[0]).filter((v, i, d)=> d.indexOf(v)===i)
-                                                      : data[node_property].map(d => d[node_group_name]).filter((v,i,d)=> d.indexOf(v)===i);
+            keys = node_group_name ===""?[]:data[node_property].map(d => d[node_group_name]).filter((v,i,d)=> d.indexOf(v)===i);
 
             //console.log(keys);
             
@@ -64,16 +65,17 @@ export const dragForceChart = () => {
                 const svg = d3.select(this).selectAll("svg").data([data]);
 
                 // Otherwise, create the skeletal chart.
-                const svgEnter = svg.enter().append("svg");
-                const gEnter = svgEnter.append("g");
-
-
-                // Update the outer dimensions.
-                svg.merge(svgEnter).attr("width", width)
+                const svgEnter = svg.enter().append("svg")
+                svgEnter.append("g"); 
+                              
+                // Update the outer dimensions. merged_svg contains all the slected svg plus g
+                // because each time when enter() new svg, 'g' will be appended
+                const merged_svg = svg.merge(svgEnter).attr("width", width)
                     .attr("height", height);
 
                 // Update the inner dimensions.
-                const g = svg.merge(svgEnter).select("g")
+                
+                const g = merged_svg.select("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                 
                 let link = g.append("g")
@@ -140,6 +142,12 @@ export const dragForceChart = () => {
                     .style("text-transform", "capitalize")
                     .text(d);
                 });
+
+                g.append("text")
+                .attr("transform", `translate(${innerWidth/2},-45)`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)    
             
         });
 
@@ -206,6 +214,14 @@ export const dragForceChart = () => {
         yValue = _;
         return chart;
     };
+
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    }
+
+   
 
     return chart;
 }

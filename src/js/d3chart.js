@@ -2,7 +2,7 @@
 // import d3Tip from 'd3-tip';
 import { barChart } from './charts/barchart';
 import { scatterPlot } from './charts/scatterplot';
-import { timeSeriesLineChart } from './charts/timeserieslinechart';
+import { lineChart } from './charts/linechart';
 import { areaChart } from './charts/areachart';
 import { stackAreaChart } from './charts/stackareachart';
 import { pieChart } from './charts/piechart';
@@ -11,7 +11,7 @@ import { boxPlot } from './charts/boxplot';
 import { dragForceChart } from './charts/dragforce';
 export { barChart };
 export { scatterPlot };
-export { timeSeriesLineChart };
+export { lineChart };
 export { areaChart };
 export { stackAreaChart };
 export { pieChart };

@@ -3,13 +3,18 @@ import * as d3 from 'd3';
 
 export const areaChart = () => {
 
-    let margin = { left: 40, right: 40, top: 30, bottom: 100 },
+    let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         height = 450,
         width = 400,
-        innerHeight = height - margin.top - margin.bottom,
-        innerWidth = width - margin.left - margin.right,
-        xScale = d3.scaleTime(),
+        
+        xScale = d3.scaleLinear(),
         yScale = d3.scaleLinear(),
+
+        x_label="",
+        y_label="",
+        title="",
+        x_text_rotate=0,
+        y_text_rotate=0,
 
         xValue = "",
         y1Value = "",
@@ -23,6 +28,10 @@ export const areaChart = () => {
         selection.each(function(data) {
             //console.log("key test", xValue(data[0]));
             //console.log("data columns", data.columns);
+
+            let innerHeight = height - margin.top - margin.bottom,
+            innerWidth = width - margin.left - margin.right;
+            
             const keys = data.columns;
 
             if (xValue === "") {
@@ -85,18 +94,24 @@ export const areaChart = () => {
             var yAxis = gEnter.append("g")
                 .attr("class", "y axis")
 
-            // Y-Axis label
-            yAxis.append("text")
-                .attr("class", "axis-title")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .attr("fill", "#5D6971")
-                //.text("Population)");
+            xAxis.call(xAxisCall.scale(xScale)).selectAll("text").attr("transform",`rotate(${x_text_rotate})`);
+            yAxis.call(yAxisCall.scale(yScale)).selectAll("text").attr("transform",`rotate(${y_text_rotate})`);
 
-            xAxis.call(xAxisCall.scale(xScale));
-            yAxis.call(yAxisCall.scale(yScale));
+            g.append("text")
+                .attr("transform", `translate(${innerWidth/2},-10)`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)    
+
+            g.append("text")
+                .attr("transform", `translate(-35, ${innerHeight/2}) rotate(-90)`)
+                .attr("text-anchor", "middle")
+                .text(`${y_label}`);
+
+            g.append("text")
+               .attr("transform", `translate(${innerWidth/2}, ${innerHeight+margin.top+20})`)    
+               .style("text-anchor", "middle")
+               .text(`${x_label}`);
 
             g.append("path")
                 .attr("fill", "steelblue")
@@ -201,5 +216,50 @@ export const areaChart = () => {
         y1Value = _;
         return chart;
     };
+
+    chart.x_lab = function(_) {
+        if (!arguments.length) return x_label;
+        x_label = _;
+        return chart;
+    }
+
+    chart.y_lab = function(_) {
+        if (!arguments.length) return y_label;
+        y_label = _;
+        return chart;
+    }
+
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    }
+
+    chart.xScale = function(_){
+        if (!arguments.length) return xScale;
+        xScale = _;
+        return chart;
+
+    }
+
+    chart.yScale = function(_){
+        if (!arguments.length) return yScale;
+        yScale =_;
+        return chart;
+    }
+
+    chart.xTextRotate = function(_){
+        if(!arguments.length) return x_text_rotate;
+        x_text_rotate =_;
+        return chart;
+    }
+
+    chart.yTextRotate = function(_){
+        if(!arguments.length) return y_text_rotate;
+        y_text_rotate =_;
+        return chart;
+    }
+
+       
     return chart;
 }

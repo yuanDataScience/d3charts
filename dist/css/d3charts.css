@@ -18,11 +18,6 @@
     fill: blue;
 }
 
-.line {
-    fill: none;
-    stroke: #000;
-    stroke-width: 1.5px;
-}
 
 .area {
     fill: #969696;
@@ -54,7 +49,7 @@
 
 .hover-line {
     stroke: #777;
-    stroke-width: 2px;
+    stroke-width: 1px;
     stroke-dasharray: 3, 3;
 }
 
@@ -63,11 +58,7 @@
     padding-bottom: 10px;
 }
 
-.line {
-    fill: none;
-    stroke-width: 3px;
-    stroke: grey;
-}
+
 .links line {
 	stroke: #999;
 	stroke-opacity: 0.6;

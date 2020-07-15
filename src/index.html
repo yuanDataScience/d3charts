@@ -1,14 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/d3charts.css" />
-   
-    <title>test</title>
-</head>
-<body>
-    <div id="boxplot"></div>
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <!-- <script src ="https://cdn.jsdelivr.net/gh/yuanDataScience/d3charts/dist/js/d3chart.js"></script> -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!--<script src="js/d3chart.js"></script>  -->
 
-    <div id="dragforce"></div>
+    <title>D3 chart tester</title>
+
+</head>
+
+
+<body>
+<header class="header">
+<div class="text-box">
+  <h1 class="heading-primary">
+     <span class="heading-primary-main">D3 Charts</span>
+     <span class="heading-primary-sub">with reusable components</span>
+     </h1>
+     </div>
+  </html>   
+</header>
+
+<main>
+ <section class="section-about">
+ <div class="u-center-text u-margin-bottom-big">
+ <h2 class="heading-secondary">
+    Exciting tours for d3 charts
+ </h2>
+ </div>
+
+<div class="row">
+   <div class="col-1-of-2">
+   <h3 class="heading-tertiary u-margin-bottom-small">code examples</h3>
+   <pre class="paragraph">const myBarChart = d3chart.barChart()
+      .width(1000).height(400)
+      .x(d => d.letter)
+      .y(d => d.frequency);
+
+const myDragForceChart = d3chart.dragForceChart()
+      .width(1000).height(400)
+      .node_property('nodes').node_group('group')
+      .link_property('links').linkby(d => d.id)
+      .linkwidth(d => Math.sqrt(d.value));
+
+d3.select("#barchart")
+      .datum(data)
+      .call(myBarChart);</pre>
+</div>
+   <div class="col-1-of-2">
+   <div class="composition">
+       <img src="img/linechart.jpg" alt="chart picture 1" class="composition__photo composition__photo--p1">
+       <img src="img/statistics-3335680_1920.jpg" alt="chart picture 2" class="composition__photo composition__photo--p2">
+       <img src="img/piechart.jpg" alt="chart picture 3" class="composition__photo composition__photo--p3">
+   </div>
+   </div>
+</div>                     
+ 
+ <section class="section-tour" id="section-tour">
+  <div class="u-center-text u-margin-bottom-big">
+ <h2 class="heading-secondary">
+    Tour of charts
+ </h2>
+ </div>
+ <div class="row">
+     <div class="col-1-of-3">
+     <div class="card">
+        <div class="card__side card__side--front card__side--front--1">
+           <div class="card__picture card__picture--1">
+              
+           </div>
+           <h4 class="card__heading">
+              <span class="card__heading-span card__heading-span--1">
+               Barchart & Scatterplot
+              </span>
+            
+           </h4>
+           <div class="card__details">
+              <ul>
+                 <li>Bar Chart</li>
+                 <li>Scatter Plot</li>
+                 <li>Box Plot</li>
+              </ul>
+           </div>
+        </div>
+        <div class="card__side card__side--back card__side--back--1">
+         <div class="card__cts">
+            <div class="card__info-box">
+               <p class="card__show-instr-1">Click Button</p>
+               <p class="card__show-instr-2">to show Demo</p>
+            </div>
+            <a href="#popup_barchart" class="btn btn--white">Click Me!</a>
+         </div>
+      </div>
+     </div>
+     </div>
+     <div class="col-1-of-3">
+      <div class="card">
+         <div class="card__side card__side--front card__side--front--2">
+            <div class="card__picture card__picture--2">
+               
+            </div>
+            <h4 class="card__heading">
+               <span class="card__heading-span card__heading-span--2">Pie & Area Charts</span>
+               
+            </h4>
+            <div class="card__details">
+               <ul>
+                  <li>Pie Chart</li>
+                  <li>Donut Chart</li>
+                  <li>Stacked Area Plot</li>
+               </ul>
+            </div>
+         </div>
+         <div class="card__side card__side--back card__side--back--2">
+            <div class="card__cts">
+               <div class="card__info-box">
+                  <p class="card__show-instr-1">Click Button</p>
+                  <p class="card__show-instr-2">to show Demo</p>
+               </div>
+               <a href="#popup_piechart" class="btn btn--white">Click Me!</a>
+            </div>
+            
+       </div>
+      </div>
+     </div>
+     <div class="col-1-of-3">
+      <div class="card">
+         <div class="card__side card__side--front card__side--front--3">
+            <div class="card__picture card__picture--3">
+               
+            </div>
+            <h4 class="card__heading">
+               <span class="card__heading-span card__heading-span--3">Linechart Series</span>
+               
+            </h4>
+            <div class="card__details">
+               <ul>
+                  <li>Line Chart</li>
+                  <li>Area Plot</li>
+                  <li>Force Link Chart</li>
+               </ul>
+            </div>
+         </div>
+         <div class="card__side card__side--back card__side--back--3">
+            <div class="card__cts">
+               <div class="card__info-box">
+                  <p class="card__show-instr-1">Click Button</p>
+                  <p class="card__show-instr-2">to show Demo</p>
+               </div>
+               <a href="#popup_linechart" class="btn btn--white">Click Me!</a>
+            </div>
+       </div>
+      </div>
+     </div>
+ </div>
+ 
+ </section>
+ </section>
+ 
+ </main> 
+ 
+ <div class="popup" id="popup_barchart">
+    <div class="popup__content" id="popup_content_bar">
+         <a href="#section-tour" class="popup__close">&times;</a>
+         <div id="barchart" class="popup__img active"></div>
+         <div id="scatterplot" class="popup__img"></div>
+         <div id="boxplot" class="popup__img"></div>
+         <button class="btn btn--green popup__button" id="bar_button">NEXT chart</button>
+         
+      </div>
+ </div>
+
+ <div class="popup" id="popup_piechart">
+   <div class="popup__content" id="popup_content_pie">     
+        <a href="#section-tour" class="popup__close">&times;</a> 
+        <div id="piechart" class="popup__img active"></div>
+        <div id="stackareachart" class="popup__img"></div> 
+        <div id="donutchart" class="popup__img"></div>
+        <button class="btn btn--green popup__button" id="pie_button">NEXT chart</button>     
+   </div>
+ 
+</div>
+
+<div class="popup" id="popup_linechart">   
+   <div class="popup__content" id="popup_content_line">      
+        <a href="#section-tour" class="popup__close">&times;</a>
+        <div id="timeserieschart" class="popup__img active"></div>        
+        <div id="areachart" class="popup__img"></div> 
+        <div id="dragforce" class="popup__img"></div>
+        <button class="btn btn--green popup__button" id="line_button">NEXT chart</button> 
+   </div>
+</div>
+
+
+
+   
 </body>
+
 </html>

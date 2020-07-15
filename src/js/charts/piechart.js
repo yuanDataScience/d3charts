@@ -3,14 +3,12 @@ import * as d3 from 'd3';
 
 export const pieChart = () => {
 
-    let margin = { left: 40, right: 40, top: 30, bottom: 100 },
+    let margin = { top: 100, right: 100, bottom: 10, left:50 },
         height = 450,
         width = 400,
-        innerHeight = height - margin.top - margin.bottom,
-        innerWidth = width - margin.left - margin.right,
         color = d3.scaleOrdinal(d3.schemeCategory10),
         donut = false,
-        radius = Math.min(innerWidth, innerHeight) / 2,
+        title="",        
 
         xValue = "",
         yValue = function(d) { return d[1]; };
@@ -23,6 +21,12 @@ export const pieChart = () => {
 
             const keys = data.map(d => d[xValue]);
 
+        let    innerHeight = height - margin.top - margin.bottom,
+        
+        innerWidth = width - margin.left - margin.right,
+        radius = Math.min(innerWidth, innerHeight) / 2
+        ;
+
             // Otherwise, create the skeletal chart.
             const svgEnter = svg.enter().append("svg")
             svgEnter.append("g");
@@ -33,7 +37,7 @@ export const pieChart = () => {
 
             // Update the inner dimensions.
             const g = svg.merge(svgEnter).select("g")
-                .attr("transform", "translate(" + innerWidth / 2 + "," + innerHeight / 2 + ")");
+                .attr("transform", "translate(" + innerWidth / 2 + "," + (innerHeight *3/4) + ")");
 
             const arc = d3.arc()
                 .innerRadius(0)
@@ -59,7 +63,7 @@ export const pieChart = () => {
             arcs.exit().remove();
 
             const legend = g.append("g")
-                .attr("transform", "translate(" + (innerWidth / 2 + 20) +
+                .attr("transform", "translate(" + (innerWidth / 4 + 20) +
                     "," + (-innerHeight / 2 + 30) + ")");
 
             keys.forEach(function(d, i) {
@@ -80,6 +84,12 @@ export const pieChart = () => {
 
 
             });
+
+            g.append("text")
+                .attr("transform", `translate(0,${-innerHeight/2-margin.top/2})`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)    
 
 
 
@@ -116,6 +126,14 @@ export const pieChart = () => {
         yValue = _;
         return chart;
     };
+
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    };
+
+   
 
 
     return chart;

@@ -4,11 +4,15 @@ import d3Tip from 'd3-tip';
 
 export const scatterPlot = () => {
 
-    var margin = { top: 30, right: 40, bottom: 100, left: 40 },
+    var margin = { top: 50, right: 100, bottom: 100, left:50 },
         width = 400,
         height = 450,
-        innerWidth = width - margin.left - margin.right,
-        innerHeight = height - margin.top - margin.bottom,
+        x_label="",
+        y_label="",
+        title="",
+        x_text_rotate=0,
+        y_text_rotate=0, 
+        
         xValue = function(d) { return d[0]; },
         yValue = function(d) { return d[1]; },
         xScale = d3.scaleBand().padding(0.1),
@@ -20,6 +24,9 @@ export const scatterPlot = () => {
             data = data.map(d => {
                 return [xValue(d), yValue(d)];
             });
+
+        let    innerWidth = width - margin.left - margin.right,
+        innerHeight = height - margin.top - margin.bottom;
 
             // Select the svg element, if it exists.
             var svg = d3.select(this).selectAll("svg").data([data]);
@@ -46,11 +53,14 @@ export const scatterPlot = () => {
 
             g.select(".x.axis")
                 .attr("transform", "translate(0," + innerHeight + ")")
-                .call(d3.axisBottom(xScale));
+                .call(d3.axisBottom(xScale))
+                .selectAll("text").attr("transform",`rotate(${x_text_rotate})`)
+                ;
 
             g.select(".y.axis")
                 .call(d3.axisLeft(yScale).ticks(10, "%"))
-                .append("text")
+                .selectAll("text").attr("transform",`rotate(${x_text_rotate})`);
+            g.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 6)
                 .attr("dy", "0.71em")
@@ -68,6 +78,22 @@ export const scatterPlot = () => {
                 .attr("r", 5);
 
             points.exit().remove();
+
+            g.append("text")
+                .attr("transform", `translate(${innerWidth/2},-10)`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)    
+
+            g.append("text")
+                .attr("transform", `translate(-35, ${innerHeight/2}) rotate(-90)`)
+                .attr("text-anchor", "middle")
+                .text(`${y_label}`);
+
+            g.append("text")
+               .attr("transform", `translate(${innerWidth/2}, ${innerHeight+margin.top+20})`)    
+               .style("text-anchor", "middle")
+               .text(`${x_label}`);
         });
 
     }
@@ -111,6 +137,51 @@ export const scatterPlot = () => {
         yValue = _;
         return chart;
     };
+
+    chart.x_lab = function(_) {
+        if (!arguments.length) return x_label;
+        x_label = _;
+        return chart;
+    }
+
+    chart.y_lab = function(_) {
+        if (!arguments.length) return y_label;
+        y_label = _;
+        return chart;
+    }
+
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    }
+
+    chart.xScale = function(_){
+        if (!arguments.length) return xScale;
+        xScale = _;
+        return chart;
+
+    }
+
+    chart.yScale = function(_){
+        if (!arguments.length) return yScale;
+        yScale =_;
+        return chart;
+    }
+
+    chart.xTextRotate = function(_){
+        if(!arguments.length) return x_text_rotate;
+        x_text_rotate =_;
+        return chart;
+    }
+
+    chart.yTextRotate = function(_){
+        if(!arguments.length) return y_text_rotate;
+        y_text_rotate =_;
+        return chart;
+    }
+
+    
 
     return chart;
 }

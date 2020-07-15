@@ -3,12 +3,17 @@ import * as d3 from 'd3';
 
 export const stackAreaChart = () => {
 
-    let margin = { left: 80, right: 100, top: 50, bottom: 100 },
+    let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         height = 500,
         width = 800,
-        innerHeight = height - margin.top - margin.bottom,
-        innerWidth = width - margin.left - margin.right,
-        xScale = d3.scaleTime(),
+
+        x_label="",
+        y_label="",
+        title="",
+        x_text_rotate=0,
+        y_text_rotate=0,
+        
+        xScale = d3.scaleLinear(),
         yScale = d3.scaleLinear(),
         color = d3.scaleOrdinal(d3.schemeCategory10),
         //formatNumber = d3.format(".1f"),
@@ -45,6 +50,8 @@ export const stackAreaChart = () => {
 
             //console.log("xValue", xValue, "yValue", yValue);
 
+        let    innerHeight = height - margin.top - margin.bottom,
+        innerWidth = width - margin.left - margin.right;
 
             // if svg already exists.
             const svg = d3.select(this).selectAll("svg").data([data]);
@@ -89,22 +96,17 @@ export const stackAreaChart = () => {
             //Axis groups
             var xAxis = gEnter.append("g")
                 .attr("class", "x axis")
-                .attr("transform", "translate(0," + innerHeight + ")");
+                .attr("transform", "translate(0," + innerHeight + ")")
+               
+                ;
             var yAxis = gEnter.append("g")
                 .attr("class", "y axis")
 
             //Y-Axis label
-            yAxis.append("text")
-                .attr("class", "axis-title")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .attr("fill", "#5D6971")
-                //.text("Population)");
+            
 
-            xAxis.call(xAxisCall.scale(xScale));
-            yAxis.call(yAxisCall.scale(yScale));
+            xAxis.call(xAxisCall.scale(xScale)).selectAll("text").attr("transform",`rotate(${x_text_rotate})`);
+            yAxis.call(yAxisCall.scale(yScale)).selectAll("text").attr("transform",`rotate(${y_text_rotate})`);
 
             var stack = d3.stack();
             stack.keys(yValue);
@@ -127,6 +129,22 @@ export const stackAreaChart = () => {
                 .style('fill', d => color(d.key));
 
             browser.exit().remove();
+
+            g.append("text")
+                .attr("transform", `translate(${innerWidth/2},-10)`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)    
+
+            g.append("text")
+                .attr("transform", `translate(-35, ${innerHeight/2}) rotate(-90)`)
+                .attr("text-anchor", "middle")
+                .text(`${y_label}`);
+
+            g.append("text")
+               .attr("transform", `translate(${innerWidth/2}, ${innerHeight+margin.top+20})`)    
+               .style("text-anchor", "middle")
+               .text(`${x_label}`);
 
             const legend = g.append("g")
                 .attr("transform", "translate(" + (innerWidth + 10) +
@@ -185,6 +203,49 @@ export const stackAreaChart = () => {
         return chart;
     };
 
+    chart.x_lab = function(_) {
+        if (!arguments.length) return x_label;
+        x_label = _;
+        return chart;
+    }
 
+    chart.y_lab = function(_) {
+        if (!arguments.length) return y_label;
+        y_label = _;
+        return chart;
+    }
+
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    }
+
+    chart.xScale = function(_){
+        if (!arguments.length) return xScale;
+        xScale = _;
+        return chart;
+
+    }
+
+    chart.yScale = function(_){
+        if (!arguments.length) return yScale;
+        yScale =_;
+        return chart;
+    }
+
+    chart.xTextRotate = function(_){
+        if(!arguments.length) return x_text_rotate;
+        x_text_rotate =_;
+        return chart;
+    }
+
+    chart.yTextRotate = function(_){
+        if(!arguments.length) return y_text_rotate;
+        y_text_rotate =_;
+        return chart;
+    }
+
+    
     return chart;
 }

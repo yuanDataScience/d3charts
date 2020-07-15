@@ -3,15 +3,13 @@ import * as d3 from 'd3';
 
 export const donutChart = () => {
 
-    let margin = { left: 80, right: 100, top: 50, bottom: 100 },
+    let margin = { top: 100, right: 100, bottom: 10, left:50 },
         height = 500,
         width = 800,
-        innerHeight = height - margin.top - margin.bottom,
-        innerWidth = width - margin.left - margin.right,
+        title="",  
+        
         color = d3.scaleOrdinal(d3.schemeCategory10),
         donut = false,
-        radius = Math.min(innerWidth, innerHeight) / 2,
-
         xValue = "",
         yValue = function(d) { return d[1]; };
 
@@ -20,8 +18,12 @@ export const donutChart = () => {
 
             // if svg already exists.
             const svg = d3.select(this).selectAll("svg").data([data]);
-
             const keys = data.map(d => d[xValue]);
+
+        let    innerHeight = height - margin.top - margin.bottom,
+        innerWidth = width - margin.left - margin.right,
+        radius = Math.min(innerWidth, innerHeight) / 2
+        ;
 
             // Otherwise, create the skeletal chart.
             const svgEnter = svg.enter().append("svg")
@@ -33,7 +35,7 @@ export const donutChart = () => {
 
             // Update the inner dimensions.
             const g = svg.merge(svgEnter).select("g")
-                .attr("transform", "translate(" + innerWidth / 4 + "," + innerHeight / 2 + ")");
+                .attr("transform", "translate(" + innerWidth / 2 + "," + innerHeight*3 / 4 + ")");
 
             const arc = d3.arc()
                 .innerRadius(radius - 80)
@@ -81,6 +83,12 @@ export const donutChart = () => {
 
             });
 
+            g.append("text")
+                .attr("transform", `translate(0,${-innerHeight/2-margin.top/2})`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)    
+
 
 
         });
@@ -117,6 +125,13 @@ export const donutChart = () => {
         return chart;
     };
 
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    };
+
+    
 
     return chart;
 }

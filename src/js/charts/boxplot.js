@@ -5,9 +5,15 @@ import { ascending } from 'd3';
 
 export const boxPlot = () => {
 
-    let margin = { top: 30, right: 40, bottom: 100, left: 40 },
+    let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         width = 400,
         height = 450,
+
+        x_label="",
+        y_label="",
+        title="",
+        y_text_rotate=0,
+        x_text_rotate=0,
         
         xValue = "",
         yValue = "",
@@ -106,6 +112,7 @@ export const boxPlot = () => {
             const grouped_data = groupBoxData(input_data,xValue, yValue, hue);
             const data = grouped_data.data;
             const yvalue_range = grouped_data.y_range;
+            const keys = grouped_data.unique_colors;
 
             const innerWidth = width - margin.left - margin.right;
             const innerHeight = height - margin.top - margin.bottom;
@@ -137,11 +144,18 @@ export const boxPlot = () => {
 
             g.select(".x.axis")
                 .attr("transform", "translate(0," + innerHeight + ")")
-                .call(d3.axisBottom(xScale));
+                .call(d3.axisBottom(xScale))
+                .selectAll("text")
+                .attr("transform", `rotate(${x_text_rotate})`)
+                ;
 
             g.select(".y.axis")
                 .call(d3.axisLeft(yScale))
-                .append("text")
+                .selectAll("text")
+                .attr("transform", `rotate(${y_text_rotate})`)
+                ;
+
+            g.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 6)
                 .attr("dy", "0.71em")
@@ -296,7 +310,50 @@ export const boxPlot = () => {
         .attr("stroke","#000")
         .attr("stroke-width", 1);
 
-        bottom_lines.exit().remove();             
+        bottom_lines.exit().remove(); 
+        
+        g.append("text")
+                .attr("transform", `translate(${innerWidth/2},-10)`)
+                .style("font-size", "3rem")
+                .attr("text-anchor","middle")
+                .text(`${title}`)
+                 
+
+            g.append("text")
+                .attr("transform", `translate(-35, ${innerHeight/2}) rotate(-90)`)
+                .attr("text-anchor", "middle")
+                .text(`${y_label}`);
+
+            g.append("text")
+               .attr("transform", `translate(${innerWidth/2}, ${innerHeight+margin.top+20})`)
+               .attr("class","title_text")    
+               .style("text-anchor", "middle")
+               .text(`${x_label}`);
+
+               const legend = g.append("g")
+               .attr("transform", "translate(" + (innerWidth + 20) +
+                   "," + (innerHeight / 2 + 30) + ")");
+
+           keys.forEach(function(d, i) {
+               let legendRow = legend.append("g")
+                   .attr("transform", "translate(0, " + (i * 20) + ")");
+
+               legendRow.append("rect")
+                   .attr("width", 10)
+                   .attr("height", 10)
+                   .attr("fill", colorScale(d));
+
+               legendRow.append("text")
+                   .attr("x", 20)
+                   .attr("y", 10)
+                   .attr("text-anchor", "start")
+                   .style("text-transform", "capitalize")
+                   .text(d);
+
+
+           });
+        
+        
             
         });
 
@@ -347,6 +404,51 @@ export const boxPlot = () => {
         hue = _;
         return chart;
     };
+
+    chart.x_lab = function(_) {
+        if (!arguments.length) return x_label;
+        x_label = _;
+        return chart;
+    }
+
+    chart.y_lab = function(_) {
+        if (!arguments.length) return y_label;
+        y_label = _;
+        return chart;
+    }
+
+    chart.title = function(_){
+        if (!arguments.length) return title;
+        title = _;
+        return chart;
+    }
+
+    chart.xScale = function(_){
+        if (!arguments.length) return xScale;
+        xScale = _;
+        return chart;
+
+    }
+
+    chart.yScale = function(_){
+        if (!arguments.length) return yScale;
+        yScale =_;
+        return chart;
+    }
+
+    chart.xTextRotate = function(_){
+        if(!arguments.length) return x_text_rotate;
+        x_text_rotate =_;
+        return chart;
+    }
+
+    chart.yTextRotate = function(_){
+        if(!arguments.length) return y_text_rotate;
+        y_text_rotate =_;
+        return chart;
+    }
+
+    
 
     return chart;
 }
