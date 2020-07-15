@@ -1,5 +1,5 @@
 
-function areaChart () {
+const areaChart = () => {
 
     let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         height = 450,
@@ -259,7 +259,7 @@ function areaChart () {
 };
 
 
-function barChart() {
+const barChart = () => {
 
     let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         width = 400,
