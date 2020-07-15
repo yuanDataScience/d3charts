@@ -1,5 +1,5 @@
 
-export const areaChart = () => {
+function areaChart () {
 
     let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         height = 450,
@@ -256,10 +256,10 @@ export const areaChart = () => {
 
        
     return chart;
-}
+};
 
 
-export const barChart = () => {
+function barChart() {
 
     let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         width = 400,
@@ -427,10 +427,10 @@ export const barChart = () => {
 
     
     return chart;
-}
+};
 
 
-export const boxPlot = () => {
+const boxPlot = () => {
 
     let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         width = 400,
@@ -878,9 +878,9 @@ export const boxPlot = () => {
     
 
     return chart;
-}
+};
 
-export const donutChart = () => {
+const donutChart = () => {
 
     let margin = { top: 100, right: 100, bottom: 10, left:50 },
         height = 500,
@@ -1013,11 +1013,11 @@ export const donutChart = () => {
     
 
     return chart;
-}
+};
 
 
 
-export const dragForceChart = () => {
+const dragForceChart = () => {
 
     let margin = { top: 70, right: 100, bottom: 10, left:50 },
         width = 400,
@@ -1239,10 +1239,10 @@ export const dragForceChart = () => {
    
 
     return chart;
-}
+};
 
 
-export const lineChart = () => {
+const lineChart = () => {
 
     var margin = { top: 60, right: 50, bottom: 60, left: 150 },
         height = 450,
@@ -1481,10 +1481,10 @@ export const lineChart = () => {
     
 
     return chart;
-}
+};
 
 
-export const pieChart = () => {
+const pieChart = () => {
 
     let margin = { top: 100, right: 100, bottom: 10, left:50 },
         height = 450,
@@ -1620,9 +1620,9 @@ export const pieChart = () => {
 
 
     return chart;
-}
+};
 
-export const scatterPlot = () => {
+const scatterPlot = () => {
 
     var margin = { top: 50, right: 100, bottom: 100, left:50 },
         width = 400,
@@ -1804,10 +1804,10 @@ export const scatterPlot = () => {
     
 
     return chart;
-}
+};
 
 
-export const stackAreaChart = () => {
+const stackAreaChart = () => {
 
     let margin = { top: 40, right: 150, bottom: 60, left: 50 },
         height = 500,
