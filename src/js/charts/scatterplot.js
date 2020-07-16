@@ -60,13 +60,7 @@ export const scatterPlot = () => {
             g.select(".y.axis")
                 .call(d3.axisLeft(yScale).ticks(10, "%"))
                 .selectAll("text").attr("transform",`rotate(${x_text_rotate})`);
-            g.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .attr("text-anchor", "end")
-                .text("Frequency");
-
+            
             var points = g.selectAll(".point")
                 .data(data);
 
