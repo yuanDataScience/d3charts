@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/d3charts.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <!--<script src ="https://cdn.jsdelivr.net/gh/yuanDataScience/d3charts/dist/js/d3chart.js"></script>-->
+    <script src ="https://gitcdn.xyz/cdn/yuanDataScience/d3charts/master/dist/js/d3chart.js"></script> -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!--<script src="js/d3chart.js"></script>-->
+
+    <title>D3 chart tester</title>
+
+</head>
+
+<script>
+
+const myBarChart = barChart()
+    .width(1000)
+    .height(400)
+    .x(function(d) { return d.letter; })
+    .y(function(d) { return d.frequency; })
+    .x_lab("Letter")
+    .y_lab("Frequency")
+    .title("Frequency of Letters");
+
+let myScatterplot = scatterPlot()
+    .width(1000)
+    .height(400)
+    .x(d => d.letter)
+    .y(d => d.frequency)
+    .x_lab("Letter")
+    .y_lab("Frequency")
+    .title("Frequency of Letters")
+    ;
+
+
+let formatDate = d3.timeParse("%Y");
+let myTimeSeriesChart = lineChart()
+    .width(800)
+    .height(400)
+    .x(d => formatDate(d.year))
+    .y(d => +d.value)
+    .x_lab("Year")
+    .y_lab("Population")
+    .title("Population vs. Year")
+    .xScale(d3.scaleTime())
+    ;
+
+let myAreaChart = areaChart()
+    .width(1000)
+    .height(400)
+    .x('date')
+    .xScale(d3.scaleTime())
+    .y1('close')
+    .x_lab('Date')
+    .y_lab("Close")
+    .title("Close vs. Date");
+
+let myAreachart2 = areaChart()
+    .width(800)
+    .height(400)
+    .x('date')
+    .xScale(d3.scaleTime())
+    .y1('Firefox')
+    .y0('Internet Explorer')
+    .x_lab("Date")
+    .y_lab("Percentage")
+    .title("Percentage of Browsers")
+    ;
+
+let myStackAreaChart = stackAreaChart()
+    .width(1000)
+    .height(400)
+    .x('date')
+    .xScale(d3.scaleTime())
+    .y(["Google Chrome", "Internet Explorer", "Firefox", "Safari"])
+    .x_lab("Date")
+    .y_lab("Percentage")
+    .title("Market Share of Broswers");
+
+let myPieChart = pieChart()
+    .width(1000)
+    .height(450)
+    .x('age')
+    .y(d => d.population)
+    .title("percentage of ages");
+
+    let myDonutChart = donutChart()
+    .width(1000)
+    .height(450)
+    .x('age')
+    .y(d => d.population)
+    .title("percentage of ages")
+    ;    
+
+const parseDate = d3.timeParse("%Y %b %d");
+
+function percentage(d, i, columns) {
+
+    d.date = parseDate(d.date);
+    for (let j = 1, n = columns.length; j < n; ++j) {
+        d[columns[j]] = +d[columns[j]] / 100;
+    }
+
+    return d;
+}
+
+
+
+const area_date_parser = d3.timeParse("%d-%b-%y")
+
+function processTSV(d, i, columns) {
+   
+    d.date = area_date_parser(d.date);
+
+    for (let i = 1, n = columns.length; i < n; ++i) {
+        d[columns[i]] = +d[columns[i]];
+    }
+
+    return d;
+}
+
+
+plot();
+
+let myBoxPlot = boxPlot()
+                       .width(1000)
+                       .height(400)
+                       .x('Pclass')
+                       .y('Age')
+                       .hue('Sex')
+                       .x_lab("Guest Class")
+                       .y_lab("Age")
+                       .title("Age of Titanic Guests in Different Classes")
+                       
+                      ;
+
+                      
+const myDragForceChart = dragForceChart()
+                              .width(1000)
+                              .height(400)
+                              .node_property('nodes')
+                              .node_group('group')
+                              .link_property('links')
+                              .linkby( d=>d.id)
+                              .linkwidth ( d=> Math.sqrt(d.value))
+                              .title("Network of Characters in Les Miserable");
+                              
+
+
+async function plot() {
+    try {
+
+        let box_data = await d3.csv("data/train.csv", d=> {
+            d.Age = +d.Age;
+            return d;
+        });
+
+        box_data = box_data.filter(function(d){ return d.Age >0});
+       
+        d3.select("#boxplot")
+          .datum(box_data)
+          .call(myBoxPlot);
+
+
+        let network_data = await d3.json("data/force.json");
+        d3.select("#dragforce")
+          .datum(network_data)
+          .call(myDragForceChart);
+
+        let data = await d3.csv("data/data.tsv", function(d) {
+            d.frequency = +d.frequency;
+            return d;
+        });
+
+        let timeSeriesData = await d3.json("data/example.json");
+
+        let browser_data = await d3.tsv("data/browser_usage.tsv", percentage);
+
+        console.log("broswer data", browser_data);
+
+        let area_data = await d3.tsv("data/area.tsv", processTSV);
+
+        let pie_data = await d3.csv("data/pie.csv", d => { d.population = +d.population; return d; });
+
+
+        d3.select("#barchart")
+            .datum(data)
+            .call(myBarChart);
+
+        d3.select("#scatterplot")
+            .datum(data)
+            .call(myScatterplot);
+
+        d3.select("#timeserieschart")
+            .datum(timeSeriesData)
+            .call(myTimeSeriesChart);
+
+        d3.select("#areachart")
+            .datum(area_data)
+            .call(myAreaChart);
+
+        d3.select("#areachart2")
+            .datum(browser_data)
+            .call(myAreachart2);
+
+        d3.select("#stackareachart")
+            .datum(browser_data)
+            .call(myStackAreaChart);
+
+        d3.select("#piechart")
+            .datum(pie_data)
+            .call(myPieChart);
+
+        d3.select("#donutchart")
+          .datum(pie_data)
+          .call(myDonutChart);    
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+</script>
+
+
+<body>
+<header class="header">
+<div class="text-box">
+  <h1 class="heading-primary">
+     <span class="heading-primary-main">D3 Charts</span>
+     <span class="heading-primary-sub">with reusable components</span>
+     </h1>
+     </div>
+  </html>   
+</header>
+
+<main>
+ <section class="section-about">
+ <div class="u-center-text u-margin-bottom-big">
+ <h2 class="heading-secondary">
+    Exciting tours for d3 charts
+ </h2>
+ </div>
+
+<div class="row">
+   <div class="col-1-of-2">
+   <h3 class="heading-tertiary u-margin-bottom-small">code examples</h3>
+   <pre class="paragraph">const myBarChart = d3chart.barChart()
+      .width(1000).height(400)
+      .x(d => d.letter)
+      .y(d => d.frequency);
+
+const myDragForceChart = d3chart.dragForceChart()
+      .width(1000).height(400)
+      .node_property('nodes').node_group('group')
+      .link_property('links').linkby(d => d.id)
+      .linkwidth(d => Math.sqrt(d.value));
+
+d3.select("#barchart")
+      .datum(data)
+      .call(myBarChart);</pre>
+</div>
+   <div class="col-1-of-2">
+   <div class="composition">
+       <img src="img/linechart.jpg" alt="chart picture 1" class="composition__photo composition__photo--p1">
+       <img src="img/statistics-3335680_1920.jpg" alt="chart picture 2" class="composition__photo composition__photo--p2">
+       <img src="img/piechart.jpg" alt="chart picture 3" class="composition__photo composition__photo--p3">
+   </div>
+   </div>
+</div>                     
+ 
+ <section class="section-tour" id="section-tour">
+  <div class="u-center-text u-margin-bottom-big">
+ <h2 class="heading-secondary">
+    Tour of charts
+ </h2>
+ </div>
+ <div class="row">
+     <div class="col-1-of-3">
+     <div class="card">
+        <div class="card__side card__side--front card__side--front--1">
+           <div class="card__picture card__picture--1">
+              
+           </div>
+           <h4 class="card__heading">
+              <span class="card__heading-span card__heading-span--1">
+               Barchart & Scatterplot
+              </span>
+            
+           </h4>
+           <div class="card__details">
+              <ul>
+                 <li>Bar Chart</li>
+                 <li>Scatter Plot</li>
+                 <li>Box Plot</li>
+              </ul>
+           </div>
+        </div>
+        <div class="card__side card__side--back card__side--back--1">
+         <div class="card__cts">
+            <div class="card__info-box">
+               <p class="card__show-instr-1">Click Button</p>
+               <p class="card__show-instr-2">to show Demo</p>
+            </div>
+            <a href="#popup_barchart" class="btn btn--white">Click Me!</a>
+         </div>
+      </div>
+     </div>
+     </div>
+     <div class="col-1-of-3">
+      <div class="card">
+         <div class="card__side card__side--front card__side--front--2">
+            <div class="card__picture card__picture--2">
+               
+            </div>
+            <h4 class="card__heading">
+               <span class="card__heading-span card__heading-span--2">Pie & Area Charts</span>
+               
+            </h4>
+            <div class="card__details">
+               <ul>
+                  <li>Pie Chart</li>
+                  <li>Donut Chart</li>
+                  <li>Stacked Area Plot</li>
+               </ul>
+            </div>
+         </div>
+         <div class="card__side card__side--back card__side--back--2">
+            <div class="card__cts">
+               <div class="card__info-box">
+                  <p class="card__show-instr-1">Click Button</p>
+                  <p class="card__show-instr-2">to show Demo</p>
+               </div>
+               <a href="#popup_piechart" class="btn btn--white">Click Me!</a>
+            </div>
+            
+       </div>
+      </div>
+     </div>
+     <div class="col-1-of-3">
+      <div class="card">
+         <div class="card__side card__side--front card__side--front--3">
+            <div class="card__picture card__picture--3">
+               
+            </div>
+            <h4 class="card__heading">
+               <span class="card__heading-span card__heading-span--3">Linechart Series</span>
+               
+            </h4>
+            <div class="card__details">
+               <ul>
+                  <li>Line Chart</li>
+                  <li>Area Plot</li>
+                  <li>Force Link Chart</li>
+               </ul>
+            </div>
+         </div>
+         <div class="card__side card__side--back card__side--back--3">
+            <div class="card__cts">
+               <div class="card__info-box">
+                  <p class="card__show-instr-1">Click Button</p>
+                  <p class="card__show-instr-2">to show Demo</p>
+               </div>
+               <a href="#popup_linechart" class="btn btn--white">Click Me!</a>
+            </div>
+       </div>
+      </div>
+     </div>
+ </div>
+ 
+ </section>
+ </section>
+ 
+ </main> 
+ 
+ <div class="popup" id="popup_barchart">
+    <div class="popup__content" id="popup_content_bar">
+         <a href="#section-tour" class="popup__close">&times;</a>
+         <div id="barchart" class="popup__img active"></div>
+         <div id="scatterplot" class="popup__img"></div>
+         <div id="boxplot" class="popup__img"></div>
+         <button class="btn btn--green popup__button" id="bar_button">NEXT chart</button>
+         
+      </div>
+ </div>
+
+ <div class="popup" id="popup_piechart">
+   <div class="popup__content" id="popup_content_pie">     
+        <a href="#section-tour" class="popup__close">&times;</a> 
+        <div id="piechart" class="popup__img active"></div>
+        <div id="stackareachart" class="popup__img"></div> 
+        <div id="donutchart" class="popup__img"></div>
+        <button class="btn btn--green popup__button" id="pie_button">NEXT chart</button>     
+   </div>
+ 
+</div>
+
+<div class="popup" id="popup_linechart">   
+   <div class="popup__content" id="popup_content_line">      
+        <a href="#section-tour" class="popup__close">&times;</a>
+        <div id="timeserieschart" class="popup__img active"></div>        
+        <div id="areachart" class="popup__img"></div> 
+        <div id="dragforce" class="popup__img"></div>
+        <button class="btn btn--green popup__button" id="line_button">NEXT chart</button> 
+   </div>
+</div>
+
+
+
+   
+<script src="js/bundle.js"></script></body>
+
+</html>
