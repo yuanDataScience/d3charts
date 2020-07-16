@@ -267,7 +267,7 @@ async function plot() {
       .link_property('links').linkby(d => d.id)
       .linkwidth(d => Math.sqrt(d.value));
 
-      const network_data = await d3.json("data/force.json");
+const network_data = await d3.json("data/force.json");
       d3.select("#dragforce")
         .datum(network_data)
         .call(myDragForceChart);</pre>
@@ -279,9 +279,9 @@ async function plot() {
         .y_lab("Age")
         .title("Age of Titanic Guests in Different Classes")
    
-      let box_data = await d3.csv("data/train.csv", d=> {
-            d.Age = +d.Age; return d; });
-      box_data = box_data.filter(function(d){ return d.Age >0});
+let box_data = await d3.csv("data/train.csv", d => {
+        d.Age = +d.Age; return d; });
+        box_data = box_data.filter(function(d){ return d.Age >0});
 
       d3.select("#dragforce")
         .datum(network_data)
