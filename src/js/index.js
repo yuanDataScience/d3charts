@@ -9,6 +9,7 @@ function init(){
     state.active_bar = "barchart";
     state.active_pie = "piechart";
     state.active_line = "timeserieschart";
+    state.active_paragraph ="code_example_1";
     
 }
 
@@ -38,5 +39,30 @@ document.getElementById("line_button").addEventListener('click', event =>{
     document.getElementById(state.active_line).classList.toggle("active");
 
 });
+
+document.getElementById("composition__photo--1").addEventListener('mouseover', event => {
+    if (state.active_paragraph!="code_example_1"){
+        document.getElementById(state.active_paragraph).classList.toggle("active");
+        state.active_paragraph = "code_example_1";
+        document.getElementById(state.active_paragraph).classList.toggle("active");
+    }
+   
+});
+
+document.getElementById("composition__photo--2").addEventListener('mouseover', event => {
+    if (state.active_paragraph!="code_example_2"){
+        document.getElementById(state.active_paragraph).classList.toggle("active");
+        state.active_paragraph = "code_example_2";
+        document.getElementById(state.active_paragraph).classList.toggle("active");
+    }
+});
+
+document.getElementById("composition__photo--3").addEventListener('mouseover', event => {
+    if (state.active_paragraph!="code_example_3"){
+        document.getElementById(state.active_paragraph).classList.toggle("active");
+        state.active_paragraph = "code_example_3";
+        document.getElementById(state.active_paragraph).classList.toggle("active");
+    }
+})
 
 

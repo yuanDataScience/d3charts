@@ -155,14 +155,7 @@ export const boxPlot = () => {
                 .attr("transform", `rotate(${y_text_rotate})`)
                 ;
 
-            g.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .attr("text-anchor", "end")
-                .text("Frequency");
-
-            //add vertical lines
+           //add vertical lines
             const vertical_lines = g.selectAll(".vertical_line")
             .data(data);
             

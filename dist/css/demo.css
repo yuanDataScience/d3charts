@@ -180,6 +180,11 @@ body {
   .composition:hover .composition__photo:not(:hover) {
     transform: scale(0.95); }
 
+.paragraph {
+  display: none; }
+  .paragraph.active {
+    display: block; }
+
 .card {
   perspective: 150rem;
   -moz-perspective: 150rem;

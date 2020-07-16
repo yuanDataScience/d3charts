@@ -32,3 +32,11 @@
         transform: scale(.95);
     }
 }
+
+.paragraph {
+    display: none;
+
+    &.active{
+        display: block;
+    }
+}
