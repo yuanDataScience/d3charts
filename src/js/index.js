@@ -1,11 +1,6 @@
 // import * as d3chart from './d3chart';
 // import * as d3 from 'd3';
 
-
-
-
-
-
 const state ={};
 
 init();
