@@ -7,11 +7,11 @@
     <link rel="stylesheet" type="text/css" href="css/d3charts.css" />
     <link rel="stylesheet" type="text/css" href="css/demo.css" />
     <!--<script src ="https://cdn.jsdelivr.net/gh/yuanDataScience/d3charts/dist/js/d3chart.js"></script>-->
-    <script src ="https://gitcdn.xyz/cdn/yuanDataScience/d3charts/master/dist/js/d3chart.js"></script> -->
+    <script src ="https://gitcdn.xyz/cdn/yuanDataScience/d3charts/v0.1/dist/js/d3chart.js"></script> -->
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <!--<script src="js/d3chart.js"></script>-->
 
-    <title>D3 chart tester</title>
+    <title>D3 Chart Demonstration</title>
 
 </head>
 
@@ -249,26 +249,51 @@ async function plot() {
 <div class="row">
    <div class="col-1-of-2">
    <h3 class="heading-tertiary u-margin-bottom-small">code examples</h3>
-   <pre class="paragraph">const myBarChart = d3chart.barChart()
+   <pre id="code_example_1" class="paragraph active">const myBarChart = barChart()
       .width(1000).height(400)
       .x(d => d.letter)
-      .y(d => d.frequency);
+      .y(d => d.frequency)
+      .x_lab("Letter")
+      .y_lab("Frequency")
+      .title("Frequency of Letters");
 
-const myDragForceChart = d3chart.dragForceChart()
+      d3.select("#barchart")
+      .datum(data)
+      .call(myBarChart);</pre>
+      
+      <pre id="code_example_2" class="paragraph">const myDragForceChart = dragForceChart()
       .width(1000).height(400)
       .node_property('nodes').node_group('group')
       .link_property('links').linkby(d => d.id)
       .linkwidth(d => Math.sqrt(d.value));
 
-d3.select("#barchart")
-      .datum(data)
-      .call(myBarChart);</pre>
+const network_data = await d3.json("data/force.json");
+      d3.select("#dragforce")
+        .datum(network_data)
+        .call(myDragForceChart);</pre>
+
+        <pre id="code_example_3" class="paragraph">const myBoxPlot = boxPlot()
+        .width(1000).height(400)
+        .x('Pclass').y('Age')
+        .hue('Sex').x_lab("Guest Class")
+        .y_lab("Age")
+        .title("Age of Titanic Guests in Different Classes")
+   
+let box_data = await d3.csv("data/train.csv", d => {
+        d.Age = +d.Age; return d; });
+        box_data = box_data.filter(function(d){ return d.Age >0});
+
+      d3.select("#dragforce")
+        .datum(network_data)
+        .call(myDragForceChart);</pre>   
+
+
 </div>
    <div class="col-1-of-2">
    <div class="composition">
-       <img src="img/linechart.jpg" alt="chart picture 1" class="composition__photo composition__photo--p1">
-       <img src="img/statistics-3335680_1920.jpg" alt="chart picture 2" class="composition__photo composition__photo--p2">
-       <img src="img/piechart.jpg" alt="chart picture 3" class="composition__photo composition__photo--p3">
+       <img src="img/linechart.jpg" alt="chart picture 1" id="composition__photo--1" class="composition__photo composition__photo--p1">
+       <img src="img/statistics-3335680_1920.jpg" alt="chart picture 2" id="composition__photo--2" class="composition__photo composition__photo--p2">
+       <img src="img/piechart.jpg" alt="chart picture 3" id="composition__photo--3" class="composition__photo composition__photo--p3">
    </div>
    </div>
 </div>                     
